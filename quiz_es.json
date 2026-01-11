@@ -1,0 +1,172 @@
+[
+  {
+    "title": "Matemáticas - Grado 6",
+    "subject": "Matemáticas",
+    "level": "Grado 6",
+    "description": "Cuestionario sobre decimales y fracciones",
+    "duration": 15,
+    "questions": [
+      {
+        "question": "¿Cuál es el valor de 3/4 + 1/4?",
+        "options": ["1", "4/8", "1/2", "2/4"],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "¿Cuánto es 2.5 × 4?",
+        "options": ["8", "10", "12", "6"],
+        "correctAnswer": "10"
+      },
+      {
+        "question": "¿Cuál es el perímetro de un cuadrado de lado 5 cm?",
+        "options": ["10 cm", "15 cm", "20 cm", "25 cm"],
+        "correctAnswer": "20 cm"
+      },
+      {
+        "question": "¿Cuál es la forma decimal de 1/2?",
+        "options": ["0.2", "0.5", "0.25", "0.75"],
+        "correctAnswer": "0.5"
+      },
+      {
+        "question": "¿Cuánto es 15 ÷ 3?",
+        "options": ["3", "4", "5", "6"],
+        "correctAnswer": "5"
+      }
+    ]
+  },
+  {
+    "title": "Ciencias - Grado 7",
+    "subject": "Ciencias",
+    "level": "Grado 7",
+    "description": "Cuestionario sobre el sistema solar y astronomía",
+    "duration": 20,
+    "questions": [
+      {
+        "question": "¿Qué planeta está más cerca del Sol?",
+        "options": ["Venus", "Mercurio", "Marte", "Tierra"],
+        "correctAnswer": "Mercurio"
+      },
+      {
+        "question": "¿Cuántos planetas tiene nuestro sistema solar?",
+        "options": ["7", "8", "9", "10"],
+        "correctAnswer": "8"
+      },
+      {
+        "question": "¿Qué planeta es conocido como el planeta rojo?",
+        "options": ["Júpiter", "Saturno", "Marte", "Venus"],
+        "correctAnswer": "Marte"
+      },
+      {
+        "question": "¿Cuál es el planeta más grande del sistema solar?",
+        "options": ["Saturno", "Neptuno", "Urano", "Júpiter"],
+        "correctAnswer": "Júpiter"
+      },
+      {
+        "question": "¿Qué satélite natural orbita la Tierra?",
+        "options": ["El Sol", "La Luna", "Marte", "Venus"],
+        "correctAnswer": "La Luna"
+      }
+    ]
+  },
+  {
+    "title": "Español - Grado 8",
+    "subject": "Español",
+    "level": "Grado 8",
+    "description": "Cuestionario sobre gramática y conjugación",
+    "duration": 15,
+    "questions": [
+      {
+        "question": "¿Cuál es el participio del verbo 'escribir'?",
+        "options": ["escribido", "escrito", "escribiendo", "escribo"],
+        "correctAnswer": "escrito"
+      },
+      {
+        "question": "¿Qué tipo de palabra es 'rápidamente'?",
+        "options": ["Adjetivo", "Adverbio", "Sustantivo", "Verbo"],
+        "correctAnswer": "Adverbio"
+      },
+      {
+        "question": "¿Cómo se escribe el plural de 'lápiz'?",
+        "options": ["lápizes", "lápices", "lapices", "lápizs"],
+        "correctAnswer": "lápices"
+      },
+      {
+        "question": "¿En qué tiempo está 'comeré'?",
+        "options": ["Presente", "Pretérito", "Futuro", "Imperfecto"],
+        "correctAnswer": "Futuro"
+      },
+      {
+        "question": "¿Cuál es la función de 'María' en 'María come una manzana'?",
+        "options": ["Complemento directo", "Complemento indirecto", "Sujeto", "Predicado"],
+        "correctAnswer": "Sujeto"
+      }
+    ]
+  },
+  {
+    "title": "Historia - Grado 9",
+    "subject": "Historia",
+    "level": "Grado 9",
+    "description": "Cuestionario sobre la independencia americana",
+    "duration": 20,
+    "questions": [
+      {
+        "question": "¿En qué año fue la independencia de Estados Unidos?",
+        "options": ["1776", "1789", "1804", "1810"],
+        "correctAnswer": "1776"
+      },
+      {
+        "question": "¿Quién escribió la Declaración de Independencia de EE.UU.?",
+        "options": ["George Washington", "Thomas Jefferson", "Benjamin Franklin", "John Adams"],
+        "correctAnswer": "Thomas Jefferson"
+      },
+      {
+        "question": "¿Contra qué país luchó Estados Unidos por su independencia?",
+        "options": ["Francia", "España", "Gran Bretaña", "Holanda"],
+        "correctAnswer": "Gran Bretaña"
+      },
+      {
+        "question": "¿Cuál fue la primera capital de Estados Unidos?",
+        "options": ["Nueva York", "Filadelfia", "Boston", "Washington D.C."],
+        "correctAnswer": "Nueva York"
+      },
+      {
+        "question": "¿Quién fue el primer presidente de Estados Unidos?",
+        "options": ["Thomas Jefferson", "John Adams", "George Washington", "Benjamin Franklin"],
+        "correctAnswer": "George Washington"
+      }
+    ]
+  },
+  {
+    "title": "Física - Grado 10",
+    "subject": "Física",
+    "level": "Grado 10",
+    "description": "Cuestionario sobre fuerzas y movimiento",
+    "duration": 25,
+    "questions": [
+      {
+        "question": "¿Cuál es la unidad de fuerza en el SI?",
+        "options": ["Julio", "Vatio", "Newton", "Pascal"],
+        "correctAnswer": "Newton"
+      },
+      {
+        "question": "¿Qué ley describe la relación entre fuerza, masa y aceleración?",
+        "options": ["1ra Ley de Newton", "2da Ley de Newton", "3ra Ley de Newton", "Ley de Hooke"],
+        "correctAnswer": "2da Ley de Newton"
+      },
+      {
+        "question": "¿Cuál es la velocidad de la luz en el vacío?",
+        "options": ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10⁷ m/s", "3 × 10⁹ m/s"],
+        "correctAnswer": "3 × 10⁸ m/s"
+      },
+      {
+        "question": "¿Cuál es el principio de la 3ra Ley de Newton?",
+        "options": ["Acción = Reacción", "F = ma", "Inercia", "Conservación de energía"],
+        "correctAnswer": "Acción = Reacción"
+      },
+      {
+        "question": "¿Qué magnitud física se mide en julios?",
+        "options": ["Fuerza", "Potencia", "Energía", "Presión"],
+        "correctAnswer": "Energía"
+      }
+    ]
+  }
+]
