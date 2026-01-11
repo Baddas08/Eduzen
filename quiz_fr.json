@@ -1,0 +1,172 @@
+[
+  {
+    "title": "Mathématiques - Niveau 6ème",
+    "subject": "Mathématiques",
+    "level": "6ème",
+    "description": "Quiz sur les nombres décimaux et les fractions",
+    "duration": 15,
+    "questions": [
+      {
+        "question": "Quelle est la valeur de 3/4 + 1/4 ?",
+        "options": ["1", "4/8", "1/2", "2/4"],
+        "correctAnswer": "1"
+      },
+      {
+        "question": "Combien font 2.5 × 4 ?",
+        "options": ["8", "10", "12", "6"],
+        "correctAnswer": "10"
+      },
+      {
+        "question": "Quel est le périmètre d'un carré de côté 5 cm ?",
+        "options": ["10 cm", "15 cm", "20 cm", "25 cm"],
+        "correctAnswer": "20 cm"
+      },
+      {
+        "question": "Quelle est la forme décimale de 1/2 ?",
+        "options": ["0.2", "0.5", "0.25", "0.75"],
+        "correctAnswer": "0.5"
+      },
+      {
+        "question": "Combien font 15 ÷ 3 ?",
+        "options": ["3", "4", "5", "6"],
+        "correctAnswer": "5"
+      }
+    ]
+  },
+  {
+    "title": "Sciences - Niveau 5ème",
+    "subject": "Sciences",
+    "level": "5ème",
+    "description": "Quiz sur le système solaire et l'astronomie",
+    "duration": 20,
+    "questions": [
+      {
+        "question": "Quelle est la planète la plus proche du Soleil ?",
+        "options": ["Vénus", "Mercure", "Mars", "Terre"],
+        "correctAnswer": "Mercure"
+      },
+      {
+        "question": "Combien de planètes compte notre système solaire ?",
+        "options": ["7", "8", "9", "10"],
+        "correctAnswer": "8"
+      },
+      {
+        "question": "Quelle planète est connue comme la planète rouge ?",
+        "options": ["Jupiter", "Saturne", "Mars", "Vénus"],
+        "correctAnswer": "Mars"
+      },
+      {
+        "question": "Quelle est la plus grande planète du système solaire ?",
+        "options": ["Saturne", "Neptune", "Uranus", "Jupiter"],
+        "correctAnswer": "Jupiter"
+      },
+      {
+        "question": "Quel astre naturel orbite autour de la Terre ?",
+        "options": ["Le Soleil", "La Lune", "Mars", "Vénus"],
+        "correctAnswer": "La Lune"
+      }
+    ]
+  },
+  {
+    "title": "Français - Niveau 4ème",
+    "subject": "Français",
+    "level": "4ème",
+    "description": "Quiz sur la grammaire et la conjugaison",
+    "duration": 15,
+    "questions": [
+      {
+        "question": "Quel est le participe passé du verbe 'prendre' ?",
+        "options": ["pris", "prend", "prendu", "prenant"],
+        "correctAnswer": "pris"
+      },
+      {
+        "question": "Quelle est la nature du mot 'rapidement' ?",
+        "options": ["Adjectif", "Adverbe", "Nom", "Verbe"],
+        "correctAnswer": "Adverbe"
+      },
+      {
+        "question": "Comment accorde-t-on 'beau' au féminin pluriel ?",
+        "options": ["beaux", "belles", "belle", "beaus"],
+        "correctAnswer": "belles"
+      },
+      {
+        "question": "Quel temps est 'je mangerai' ?",
+        "options": ["Présent", "Imparfait", "Futur simple", "Passé composé"],
+        "correctAnswer": "Futur simple"
+      },
+      {
+        "question": "Quelle est la fonction de 'Marie' dans 'Marie mange une pomme' ?",
+        "options": ["COD", "COI", "Sujet", "Complément"],
+        "correctAnswer": "Sujet"
+      }
+    ]
+  },
+  {
+    "title": "Histoire - Niveau 3ème",
+    "subject": "Histoire",
+    "level": "3ème",
+    "description": "Quiz sur la Révolution française",
+    "duration": 20,
+    "questions": [
+      {
+        "question": "En quelle année a commencé la Révolution française ?",
+        "options": ["1789", "1799", "1804", "1815"],
+        "correctAnswer": "1789"
+      },
+      {
+        "question": "Qui était le roi de France au début de la Révolution ?",
+        "options": ["Louis XIV", "Louis XV", "Louis XVI", "Napoléon"],
+        "correctAnswer": "Louis XVI"
+      },
+      {
+        "question": "Quel monument a été pris d'assaut le 14 juillet 1789 ?",
+        "options": ["Le Louvre", "La Bastille", "Versailles", "Notre-Dame"],
+        "correctAnswer": "La Bastille"
+      },
+      {
+        "question": "Quelle déclaration a été adoptée en 1789 ?",
+        "options": ["Déclaration d'indépendance", "Déclaration des Droits de l'Homme et du Citoyen", "Charte", "Constitution"],
+        "correctAnswer": "Déclaration des Droits de l'Homme et du Citoyen"
+      },
+      {
+        "question": "Qui a pris le pouvoir après la Révolution ?",
+        "options": ["Robespierre", "Danton", "Napoléon Bonaparte", "Marat"],
+        "correctAnswer": "Napoléon Bonaparte"
+      }
+    ]
+  },
+  {
+    "title": "Physique - Niveau Seconde",
+    "subject": "Physique",
+    "level": "Seconde",
+    "description": "Quiz sur les forces et le mouvement",
+    "duration": 25,
+    "questions": [
+      {
+        "question": "Quelle est l'unité de la force dans le SI ?",
+        "options": ["Joule", "Watt", "Newton", "Pascal"],
+        "correctAnswer": "Newton"
+      },
+      {
+        "question": "Quelle loi décrit la relation entre force, masse et accélération ?",
+        "options": ["1ère loi de Newton", "2ème loi de Newton", "3ème loi de Newton", "Loi de Hooke"],
+        "correctAnswer": "2ème loi de Newton"
+      },
+      {
+        "question": "Quelle est la vitesse de la lumière dans le vide ?",
+        "options": ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10⁷ m/s", "3 × 10⁹ m/s"],
+        "correctAnswer": "3 × 10⁸ m/s"
+      },
+      {
+        "question": "Quel est le principe de la 3ème loi de Newton ?",
+        "options": ["Action = Réaction", "F = ma", "Inertie", "Conservation de l'énergie"],
+        "correctAnswer": "Action = Réaction"
+      },
+      {
+        "question": "Quelle grandeur physique mesure-t-on en joules ?",
+        "options": ["Force", "Puissance", "Énergie", "Pression"],
+        "correctAnswer": "Énergie"
+      }
+    ]
+  }
+]
