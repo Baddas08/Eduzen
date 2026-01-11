@@ -1,550 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="StudyZen - Organise tes études, calme ton esprit. Planifie efficacement tes études avec notre plateforme éducative interactive.">
-    <meta name="keywords" content="éducation, études, planification, PWA, école, université">
-    <meta name="author" content="Karlito">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://badley08.github.io/StudyZen/">
-    <meta property="og:title" content="StudyZen - Organise tes études, calme ton esprit">
-    <meta property="og:description" content="Planifie efficacement tes études avec notre plateforme éducative interactive">
-    <meta property="og:image" content="https://badley08.github.io/StudyZen/studyzen.png">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://badley08.github.io/StudyZen/">
-    <meta property="twitter:title" content="StudyZen - Organise tes études, calme ton esprit">
-    <meta property="twitter:description" content="Planifie efficacement tes études avec notre plateforme éducative interactive">
-    <meta property="twitter:image" content="https://badley08.github.io/StudyZen/studyzen.png">
-    
-    <title>StudyZen - Organise tes études</title>
+    <title>Eduzen - Plateforme Éducative</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome for icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Favicon -->
-    <link rel="icon" href="studyzen.png" type="image/png">
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPpVJHdcDs8bxu42dfy1ZYp7nCwdalNto",
+            authDomain: "eduzen-a7c5a.firebaseapp.com",
+            databaseURL: "https://eduzen-a7c5a-default-rtdb.firebaseio.com",
+            projectId: "eduzen-a7c5a",
+            storageBucket: "eduzen-a7c5a.firebasestorage.app",
+            messagingSenderId: "221297092700",
+            appId: "1:221297092700:web:f0ee45a49e133482901e99",
+            measurementId: "G-18Q0R8Z8Q4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+        window.db = getDatabase(app);
+        window.storage = getStorage(app);
+    </script>
+    
+    <!-- CSS Files -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="index.css">
 </head>
-<body class="theme-light min-h-screen">
-    <!-- Notification Toast -->
-    <div id="notification" class="notification bg-blue-500 text-white">
-        <div class="flex items-center">
-            <i class="fas fa-bell mr-2"></i>
-            <span id="notification-text">Notification message</span>
+<body>
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader"></div>
+        <p class="mt-4 text-xl">Chargement...</p>
+    </div>
+
+    <!-- Auth Container -->
+    <div id="authContainer" class="hidden">
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-container">
+            <div class="glass auth-card">
+                <div class="text-center mb-8">
+                    <img src="eduzen.png" alt="Eduzen Logo" class="logo-img mx-auto mb-4">
+                    <h1 class="text-4xl font-bold gradient-text">Eduzen</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2" data-i18n="welcome"></p>
+                </div>
+                
+                <form id="loginFormElement" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="email"></label>
+                        <input type="email" id="loginEmail" required class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="password"></label>
+                        <input type="password" id="loginPassword" required class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
+                        <i class="fas fa-sign-in-alt mr-2"></i><span data-i18n="signIn"></span>
+                    </button>
+                </form>
+                
+                <p class="text-center mt-6 text-sm">
+                    <span data-i18n="dontHaveAccount"></span>
+                    <a href="#" id="showRegister" class="text-purple-600 hover:underline ml-2" data-i18n="createAccount"></a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="auth-container hidden">
+            <div class="glass auth-card">
+                <div class="text-center mb-8">
+                    <img src="eduzen.png" alt="Eduzen Logo" class="logo-img mx-auto mb-4">
+                    <h1 class="text-4xl font-bold gradient-text">Eduzen</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2" data-i18n="createProfile"></p>
+                </div>
+                
+                <form id="registerFormElement" class="space-y-4">
+                    <div class="text-center mb-4">
+                        <div class="profile-upload-container">
+                            <img id="profilePreview" src="https://via.placeholder.com/120" alt="Profile" class="profile-preview">
+                            <label for="profilePhotoInput" class="profile-upload-btn">
+                                <i class="fas fa-camera"></i>
+                            </label>
+                            <input type="file" id="profilePhotoInput" accept="image/*" class="hidden">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="name"></label>
+                        <input type="text" id="registerName" required class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="email"></label>
+                        <input type="email" id="registerEmail" required class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="selectClass"></label>
+                        <select id="registerClass" required class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                            <option value="">Sélectionner une classe</option>
+                            <option value="6eme">6ème</option>
+                            <option value="5eme">5ème</option>
+                            <option value="4eme">4ème</option>
+                            <option value="3eme">3ème</option>
+                            <option value="seconde">Seconde</option>
+                            <option value="premiere">Première</option>
+                            <option value="terminale">Terminale</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="selectLanguage"></label>
+                        <select id="registerLanguage" class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                            <option value="fr">Français</option>
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="password"></label>
+                        <input type="password" id="registerPassword" required class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2" data-i18n="confirmPassword"></label>
+                        <input type="password" id="registerConfirmPassword" required class="w-full px-4 py-3 rounded-lg glass border-0 focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    
+                    <button type="submit" class="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
+                        <i class="fas fa-user-plus mr-2"></i><span data-i18n="createAccount"></span>
+                    </button>
+                </form>
+                
+                <p class="text-center mt-6 text-sm">
+                    <span data-i18n="alreadyHaveAccount"></span>
+                    <a href="#" id="showLogin" class="text-purple-600 hover:underline ml-2" data-i18n="signIn"></a>
+                </p>
+            </div>
         </div>
     </div>
 
     <!-- Main App Container -->
-    <div id="app" class="min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="sticky top-0 z-50 glass py-4 px-6 shadow-md">
-            <div class="container mx-auto flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <img src="studyzen.png" alt="StudyZen Logo" class="h-10 w-10 rounded-full">
-                    <h1 class="text-xl font-bold">StudyZen</h1>
+    <div id="appContainer" class="hidden">
+        <!-- Top Navigation -->
+        <nav class="top-nav glass">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="eduzen.png" alt="Eduzen" class="w-10 h-10">
+                    <h1 class="text-2xl font-bold gradient-text">Eduzen</h1>
                 </div>
                 
                 <div class="flex items-center space-x-4">
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <i class="fas fa-moon"></i>
+                    <!-- Notifications -->
+                    <button id="notifBtn" class="relative p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span id="notifBadge" class="notification-badge hidden">0</span>
                     </button>
                     
-                    <button id="menu-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <i class="fas fa-bars"></i>
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
+                        <i class="fas fa-moon text-xl"></i>
                     </button>
-                </div>
-            </div>
-        </header>
-
-        <!-- Sidebar Menu -->
-        <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg sidebar hidden">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-8">
+                    
+                    <!-- Language Selector -->
+                    <select id="languageSelector" class="px-3 py-2 rounded-lg glass border-0">
+                        <option value="fr">FR</option>
+                        <option value="en">EN</option>
+                        <option value="es">ES</option>
+                    </select>
+                    
+                    <!-- User Profile -->
                     <div class="flex items-center space-x-2">
-                        <img src="studyzen.png" alt="StudyZen Logo" class="h-10 w-10 rounded-full">
-                        <h2 class="text-xl font-bold">StudyZen</h2>
+                        <img id="userProfilePic" src="https://via.placeholder.com/40" alt="Profile" class="w-10 h-10 rounded-full">
+                        <span id="userName" class="font-medium"></span>
                     </div>
-                    <button id="close-menu" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times"></i>
+                    
+                    <!-- Logout -->
+                    <button id="logoutBtn" class="p-2 hover:bg-red-100 dark:hover:bg-red-900 rounded-lg text-red-600">
+                        <i class="fas fa-sign-out-alt text-xl"></i>
                     </button>
                 </div>
-                
-                <nav class="space-y-2">
-                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-home mr-3"></i> Accueil
-                    </a>
-                    <a href="#study-planner" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-calendar-alt mr-3"></i> Planificateur
-                    </a>
-                    <a href="#tasks" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-tasks mr-3"></i> Tâches
-                    </a>
-                    <a href="#resources" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-book mr-3"></i> Ressources
-                    </a>
-                    <a href="#settings" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-cog mr-3"></i> Paramètres
-                    </a>
-                    <a href="#about" class="flex items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <i class="fas fa-info-circle mr-3"></i> À propos
-                    </a>
-                </nav>
-                
-                <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                    <div class="mb-4">
-                        <h3 class="font-semibold mb-2">Version</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">v1.0.0</p>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <h3 class="font-semibold mb-2">Liens rapides</h3>
-                        <ul class="space-y-2">
-                            <li>
-                                <a href="https://badley08.github.io/Karlito" target="_blank" class="text-blue-500 hover:underline flex items-center">
-                                    <i class="fas fa-user mr-2"></i> Mon Portfolio
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://ko-fi.com/karlito08" target="_blank" class="text-blue-500 hover:underline flex items-center">
-                                    <i class="fas fa-heart mr-2"></i> Soutenez-moi
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="mt-6">
-                        <button id="install-btn" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-download mr-2"></i> Installer l'application
-                        </button>
-                    </div>
-                </div>
             </div>
-        </div>
-
-        <!-- Overlay for mobile menu -->
-        <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+        </nav>
 
         <!-- Main Content -->
-        <main class="flex-grow container mx-auto px-4 py-8">
-            <!-- Welcome Section -->
-            <section id="welcome-section" class="animate-fade-in">
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Organise tes études,<br><span class="text-blue-500">calme ton esprit</span></h1>
-                    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        StudyZen t'aide à planifier efficacement tes études avec des outils simples et intuitifs. 
-                        Reste concentré, gère ton temps et atteins tes objectifs académiques.
-                    </p>
-                </div>
+        <div class="app-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar glass">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" data-page="dashboard" class="nav-link active">
+                            <i class="fas fa-home"></i>
+                            <span data-i18n="dashboard"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="homework" class="nav-link">
+                            <i class="fas fa-book"></i>
+                            <span data-i18n="homework"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="schedule" class="nav-link">
+                            <i class="fas fa-calendar"></i>
+                            <span data-i18n="schedule"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="quiz" class="nav-link">
+                            <i class="fas fa-question-circle"></i>
+                            <span data-i18n="quiz"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="forum" class="nav-link">
+                            <i class="fas fa-comments"></i>
+                            <span data-i18n="forum"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="chat" class="nav-link">
+                            <i class="fas fa-message"></i>
+                            <span data-i18n="chat"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-page="profile" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span data-i18n="profile"></span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
 
-                <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                    <div class="glass rounded-xl p-6 text-center">
-                        <i class="fas fa-clock text-3xl text-blue-500 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Planification</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Organise ton emploi du temps et tes tâches</p>
-                    </div>
-                    <div class="glass rounded-xl p-6 text-center">
-                        <i class="fas fa-chart-line text-3xl text-blue-500 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Suivi</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Visualise ta progression et tes résultats</p>
-                    </div>
-                    <div class="glass rounded-xl p-6 text-center">
-                        <i class="fas fa-bolt text-3xl text-blue-500 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Productivité</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Augmente ta concentration et ta productivité</p>
-                    </div>
-                </div>
-
-                <!-- Features Preview -->
-                <div class="mb-12">
-                    <h2 class="text-2xl font-bold mb-6 text-center">Fonctionnalités principales</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="glass rounded-xl p-6 text-center card">
-                            <i class="fas fa-calendar-check text-4xl text-blue-500 mb-4"></i>
-                            <h3 class="text-lg font-semibold mb-2">Planificateur</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Crée ton emploi du temps personnalisé</p>
+            <!-- Content Area -->
+            <main class="content-area">
+                <!-- Dashboard Page -->
+                <div id="dashboardPage" class="page-content">
+                    <h2 class="text-3xl font-bold mb-6" data-i18n="dashboard"></h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="glass p-6 rounded-lg">
+                            <i class="fas fa-book text-4xl text-purple-600 mb-4"></i>
+                            <h3 class="text-xl font-semibold mb-2" data-i18n="homework"></h3>
+                            <p class="text-3xl font-bold" id="homeworkCount">0</p>
                         </div>
-                        <div class="glass rounded-xl p-6 text-center card">
-                            <i class="fas fa-tasks text-4xl text-blue-500 mb-4"></i>
-                            <h3 class="text-lg font-semibold mb-2">Tâches</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Gestion des devoirs et projets</p>
+                        
+                        <div class="glass p-6 rounded-lg">
+                            <i class="fas fa-check-circle text-4xl text-green-600 mb-4"></i>
+                            <h3 class="text-xl font-semibold mb-2" data-i18n="completed"></h3>
+                            <p class="text-3xl font-bold" id="completedCount">0</p>
                         </div>
-                        <div class="glass rounded-xl p-6 text-center card">
-                            <i class="fas fa-bell text-3xl text-blue-500 mb-4"></i>
-                            <h3 class="text-lg font-semibold mb-2">Rappels</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Notifications personnalisées</p>
+                        
+                        <div class="glass p-6 rounded-lg">
+                            <i class="fas fa-clock text-4xl text-yellow-600 mb-4"></i>
+                            <h3 class="text-xl font-semibold mb-2" data-i18n="pending"></h3>
+                            <p class="text-3xl font-bold" id="pendingCount">0</p>
                         </div>
-                        <div class="glass rounded-xl p-6 text-center card">
-                            <i class="fas fa-users text-4xl text-blue-500 mb-4"></i>
-                            <h3 class="text-lg font-semibold mb-2">Collaboration</h3>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Partage avec tes camarades</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Call to Action -->
-                <div class="text-center">
-                    <button id="start-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-full text-lg btn">
-                        Commencer maintenant
-                    </button>
-                </div>
-            </section>
-
-            <!-- Study Planner Section -->
-            <section id="study-planner" class="hidden animate-fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold mb-2">Planificateur d'études</h2>
-                    <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        Organise ton emploi du temps et planifie tes sessions d'étude
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2">
-                        <div class="glass rounded-xl p-6">
-                            <div class="flex justify-between items-center mb-6">
-                                <h3 class="text-xl font-bold">Emploi du temps</h3>
-                                <div class="flex space-x-2">
-                                    <button id="prev-week" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </button>
-                                    <button id="next-week" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
-                                        <i class="fas fa-chevron-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="overflow-x-auto">
-                                <table class="w-full">
-                                    <thead>
-                                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                                            <th class="py-3 text-left">Heure</th>
-                                            <th class="py-3 text-left">Lundi</th>
-                                            <th class="py-3 text-left">Mardi</th>
-                                            <th class="py-3 text-left">Mercredi</th>
-                                            <th class="py-3 text-left">Jeudi</th>
-                                            <th class="py-3 text-left">Vendredi</th>
-                                            <th class="py-3 text-left">Samedi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="timetable-body">
-                                        <!-- Timetable will be generated by JavaScript -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="mt-6">
-                                <button id="add-class-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg flex items-center">
-                                    <i class="fas fa-plus mr-2"></i> Ajouter un cours
-                                </button>
-                            </div>
+                        
+                        <div class="glass p-6 rounded-lg">
+                            <i class="fas fa-trophy text-4xl text-orange-600 mb-4"></i>
+                            <h3 class="text-xl font-semibold mb-2" data-i18n="score"></h3>
+                            <p class="text-3xl font-bold" id="totalScore">0</p>
                         </div>
                     </div>
-
-                    <div>
-                        <div class="glass rounded-xl p-6 mb-6">
-                            <h3 class="text-xl font-bold mb-4">Mes tâches</h3>
-                            <div id="tasks-list" class="space-y-4">
-                                <!-- Tasks will be generated by JavaScript -->
-                            </div>
-                        </div>
-
-                        <div class="glass rounded-xl p-6">
-                            <h3 class="text-xl font-bold mb-4">Progrès</h3>
-                            <div id="progress-container" class="space-y-4">
-                                <!-- Progress bars will be generated by JavaScript -->
-                            </div>
-                        </div>
+                    
+                    <div class="glass p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Devoirs à venir</h3>
+                        <div id="upcomingHomework"></div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Tasks Section -->
-            <section id="tasks" class="hidden animate-fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold mb-2">Gestion des tâches</h2>
-                    <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        Organise tes devoirs et projets avec des priorités claires
-                    </p>
-                </div>
-
-                <div class="glass rounded-xl p-6 max-w-4xl mx-auto">
+                <!-- Homework Page -->
+                <div id="homeworkPage" class="page-content hidden">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">Mes tâches</h3>
-                        <button id="add-task-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg flex items-center">
-                            <i class="fas fa-plus mr-2"></i> Nouvelle tâche
+                        <h2 class="text-3xl font-bold" data-i18n="homework"></h2>
+                        <button id="addHomeworkBtn" class="gradient-bg text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90">
+                            <i class="fas fa-plus mr-2"></i><span data-i18n="addHomework"></span>
                         </button>
                     </div>
+                    <div id="homeworkList"></div>
+                </div>
 
-                    <div id="all-tasks" class="space-y-4">
-                        <!-- Tasks will be generated by JavaScript -->
+                <!-- Schedule Page -->
+                <div id="schedulePage" class="page-content hidden">
+                    <h2 class="text-3xl font-bold mb-6" data-i18n="schedule"></h2>
+                    <div id="scheduleContent" class="glass p-6 rounded-lg"></div>
+                </div>
+
+                <!-- Quiz Page -->
+                <div id="quizPage" class="page-content hidden">
+                    <h2 class="text-3xl font-bold mb-6" data-i18n="quiz"></h2>
+                    <div id="quizContent"></div>
+                </div>
+
+                <!-- Forum Page -->
+                <div id="forumPage" class="page-content hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold" data-i18n="forum"></h2>
+                        <button id="newPostBtn" class="gradient-bg text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90">
+                            <i class="fas fa-plus mr-2"></i><span data-i18n="newPost"></span>
+                        </button>
                     </div>
-                </div>
-            </section>
-
-            <!-- Settings Section -->
-            <section id="settings" class="hidden animate-fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold mb-2">Paramètres</h2>
-                    <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        Personnalise ton expérience StudyZen
-                    </p>
+                    <div id="forumPosts"></div>
                 </div>
 
-                <div class="max-w-4xl mx-auto">
-                    <div class="glass rounded-xl p-6 mb-6">
-                        <h3 class="text-xl font-bold mb-4">Options générales</h3>
-                        
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-medium">Langue</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Choisis la langue d'affichage</p>
-                                </div>
-                                <select id="language-select" class="bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2">
-                                    <option value="fr">Français</option>
-                                    <option value="en">English</option>
-                                    <option value="es">Español</option>
-                                </select>
-                            </div>
-                            
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-medium">Thème</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Choisis le thème de l'interface</p>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <button id="theme-light" class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700">Clair</button>
-                                    <button id="theme-dark" class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700">Sombre</button>
-                                    <button id="theme-glass" class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700">Verre</button>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-medium">Notifications</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Gestion des rappels</p>
-                                </div>
-                                <div class="relative inline-block w-12 h-6">
-                                    <input type="checkbox" id="notifications-toggle" class="sr-only">
-                                    <label for="notifications-toggle" class="block w-12 h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                                    <span class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-300"></span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-medium">Rappels sonores</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Activer les sons de rappel</p>
-                                </div>
-                                <div class="relative inline-block w-12 h-6">
-                                    <input type="checkbox" id="sound-toggle" class="sr-only">
-                                    <label for="sound-toggle" class="block w-12 h-6 rounded-full bg-gray-300 cursor-pointer"></label>
-                                    <span class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-300"></span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-medium">Son de notification</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Choisis ton son de rappel</p>
-                                </div>
-                                <select id="notification-sound" class="bg-gray-100 dark:bg-gray-700 rounded-lg px-4 py-2">
-                                    <option value="default">Par défaut</option>
-                                    <option value="bell">Cloche</option>
-                                    <option value="chime">Carillon</option>
-                                    <option value="beep">Bip</option>
-                                </select>
-                            </div>
+                <!-- Chat Page -->
+                <div id="chatPage" class="page-content hidden">
+                    <h2 class="text-3xl font-bold mb-6" data-i18n="chat"></h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="glass p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Contacts</h3>
+                            <div id="chatUserList"></div>
                         </div>
-                    </div>
-                    
-                    <div class="glass rounded-xl p-6 mb-6">
-                        <h3 class="text-xl font-bold mb-4">Compte utilisateur</h3>
-                        
-                        <div class="flex items-center mb-6">
-                            <div class="mr-4">
-                                <img id="profile-pic" src="https://placehold.co/100x100?text=👤" alt="Profile" class="rounded-full w-24 h-24 object-cover">
-                            </div>
-                            <div>
-                                <h4 id="user-name" class="font-medium text-lg">Utilisateur</h4>
-                                <p id="user-email" class="text-gray-500 dark:text-gray-400">Étudiant StudyZen</p>
-                                <button id="change-profile-pic" class="mt-2 text-blue-500 hover:underline">
-                                    Changer la photo de profil
+                        <div class="md:col-span-2 glass p-4 rounded-lg">
+                            <div id="chatMessages" class="chat-messages mb-4"></div>
+                            <div class="flex space-x-2">
+                                <input type="text" id="chatInput" placeholder="Tapez votre message..." class="flex-1 px-4 py-3 rounded-lg glass border-0">
+                                <button id="sendMessageBtn" class="gradient-bg text-white px-6 py-3 rounded-lg">
+                                    <i class="fas fa-paper-plane"></i>
                                 </button>
                             </div>
                         </div>
-                        
-                        <div class="flex justify-end">
-                            <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg">
-                                Fermer la session
-                            </button>
+                    </div>
+                </div>
+
+                <!-- Profile Page -->
+                <div id="profilePage" class="page-content hidden">
+                    <h2 class="text-3xl font-bold mb-6" data-i18n="profile"></h2>
+                    <div class="glass p-8 rounded-lg">
+                        <div class="text-center mb-6">
+                            <img id="profilePagePic" src="https://via.placeholder.com/150" alt="Profile" class="w-32 h-32 rounded-full mx-auto mb-4">
+                            <h3 id="profilePageName" class="text-2xl font-bold"></h3>
+                            <p id="profilePageClass" class="text-gray-600 dark:text-gray-400"></p>
                         </div>
-                    </div>
-                    
-                    <div class="glass rounded-xl p-6">
-                        <h3 class="text-xl font-bold mb-4">Envoyer un message</h3>
-                        <form id="message-form" class="space-y-4">
-                            <div>
-                                <label class="block mb-2">Votre nom</label>
-                                <input type="text" id="sender-name" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3" placeholder="Votre nom">
-                            </div>
-                            <div>
-                                <label class="block mb-2">Email (facultatif)</label>
-                                <input type="email" id="sender-email" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3" placeholder="Votre email">
-                            </div>
-                            <div>
-                                <label class="block mb-2">Message</label>
-                                <textarea class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3" rows="4" placeholder="Votre message..."></textarea>
-                            </div>
-                            <div class="flex justify-end">
-                                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg">
-                                    Envoyer
-                                </button>
-                            </div>
-                        </form>
+                        <div id="profileDetails"></div>
                     </div>
                 </div>
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="py-6 px-4 text-center text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
-            <div class="container mx-auto">
-                <p>© 2025 StudyZen. Tous droits réservés.</p>
-                <p class="mt-2 text-sm">Organise tes études, calme ton esprit</p>
-                <div class="mt-4 flex justify-center space-x-4">
-                    <a href="https://github.com/badley08" target="_blank" class="hover:text-blue-500">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="https://ko-fi.com/karlito08" target="_blank" class="hover:text-blue-500">
-                        <i class="fas fa-heart"></i>
-                    </a>
-                    <a href="mailto:karlluberisse1308@gmail.com" class="hover:text-blue-500">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Install Prompt Modal -->
-    <div id="install-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Installer StudyZen</h3>
-                <button id="close-install-modal" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <p class="mb-6">Installez StudyZen sur votre appareil pour une expérience optimale hors ligne.</p>
-            <div class="flex justify-end space-x-3">
-                <button id="cancel-install" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600">Annuler</button>
-                <button id="confirm-install" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Installer</button>
-            </div>
+            </main>
         </div>
     </div>
 
-    <!-- Add Class Modal -->
-    <div id="add-class-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Ajouter un cours</h3>
-                <button id="close-add-class-modal" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="class-form">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block mb-2">Nom du cours</label>
-                        <input type="text" id="class-name" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3" placeholder="Ex: Mathématiques">
-                    </div>
-                    <div>
-                        <label class="block mb-2">Jour</label>
-                        <select id="class-day" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
-                            <option value="monday">Lundi</option>
-                            <option value="tuesday">Mardi</option>
-                            <option value="wednesday">Mercredi</option>
-                            <option value="thursday">Jeudi</option>
-                            <option value="friday">Vendredi</option>
-                            <option value="saturday">Samedi</option>
-                        </select>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block mb-2">Heure de début</label>
-                            <input type="time" id="class-start" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
-                        </div>
-                        <div>
-                            <label class="block mb-2">Heure de fin</label>
-                            <input type="time" id="class-end" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block mb-2">Professeur</label>
-                        <input type="text" id="class-teacher" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3" placeholder="Ex: M. Dupont">
-                    </div>
-                </div>
-                <div class="flex justify-end space-x-3 mt-6">
-                    <button type="button" id="cancel-class" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600">Annuler</button>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Ajouter</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <!-- Modals -->
+    <div id="modalContainer"></div>
 
-    <!-- Add Task Modal -->
-    <div id="add-task-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Ajouter une tâche</h3>
-                <button id="close-add-task-modal" class="text-gray-500 hover:text-gray-700">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="task-form">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block mb-2">Titre de la tâche</label>
-                        <input type="text" id="task-title" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3" placeholder="Ex: Rédiger le rapport">
-                    </div>
-                    <div>
-                        <label class="block mb-2">Description</label>
-                        <textarea id="task-description" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3" rows="3" placeholder="Détails de la tâche..."></textarea>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block mb-2">Date limite</label>
-                            <input type="date" id="task-due-date" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
-                        </div>
-                        <div>
-                            <label class="block mb-2">Priorité</label>
-                            <select id="task-priority" class="w-full bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
-                                <option value="low">Basse</option>
-                                <option value="medium">Moyenne</option>
-                                <option value="high">Haute</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex justify-end space-x-3 mt-6">
-                    <button type="button" id="cancel-task" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600">Annuler</button>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Ajouter</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <!-- Language Files -->
+    <script src="fr.js"></script>
+    <script src="en.js"></script>
+    <script src="es.js"></script>
+    
+    <!-- App Scripts -->
+    <script type="module" src="index.js"></script>
+    <script type="module" src="app.js"></script>
+    <script type="module" src="main.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
